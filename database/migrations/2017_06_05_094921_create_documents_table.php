@@ -16,7 +16,7 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function(Blueprint $collection)
         {
-            $collection->unique('document');
+            $collection->unique('title');
         });
     }
 
