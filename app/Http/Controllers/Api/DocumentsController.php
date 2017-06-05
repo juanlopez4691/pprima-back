@@ -48,7 +48,22 @@ class DocumentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $document              = new Document();
+        $document->document    = $request->input('document');
+        $document->description = $request->input('description');
+        $document->content     = $request->input('content');
+
+        if ($document->save()) {
+            return response()->json(
+                $document,
+                200
+            );
+        }
+
+        throw new HttpException(
+            400,
+            "Invalid data"
+        );
     }
 
     /**
