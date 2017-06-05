@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Http\Controllers\Controller;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class DocumentsController extends Controller
 {
@@ -18,9 +19,10 @@ class DocumentsController extends Controller
         $documents = Document::all();
 
         if (! $documents) {
-            return response()->json([
-                'message' => 'Invalid data',
-            ], 400);
+            throw new HttpException(
+                400,
+                "Invalid data"
+            );
         }
 
         return response()->json(
@@ -78,13 +80,15 @@ class DocumentsController extends Controller
         $document = Document::find($id);
 
         if (! $document) {
-            return response()->json([
-                'message' => 'Document not found',
-            ], 404);
+            throw new HttpException(
+                404,
+                "Document not found"
+            );
         }
 
         return response()->json(
-            $document
+            $document,
+            200
         );
     }
 
@@ -125,9 +129,10 @@ class DocumentsController extends Controller
         $document = Document::find($id);
 
         if (! $document) {
-            return response()->json([
-                'message' => 'Document not found',
-            ], 404);
+            throw new HttpException(
+                404,
+                "Document not found"
+            );
         }
 
         $document->delete();
