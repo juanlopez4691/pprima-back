@@ -12,20 +12,20 @@ class DocumentsTableSeeder extends Seeder
      */
     public function run()
     {
-        Document::insert([
-            'document'    => 'First document',
+        Document::create([
+            'title'       => 'First document',
             'description' => 'First document in the list',
             'content'     => '',
         ]);
 
-        Document::insert([
-            'document'    => 'Second document',
+        Document::create([
+            'title'       => 'Second document',
             'description' => 'Second document in the list',
             'content'     => '',
         ]);
 
-        Document::insert([
-            'document'    => 'Third document',
+        Document::create([
+            'title'       => 'Third document',
             'description' => 'Third document in the list',
             'content'     => '',
         ]);
