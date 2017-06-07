@@ -182,6 +182,12 @@ return [
          * https://github.com/jenssegers/Laravel-MongoDB
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+
+        /*
+         * Barryvdh CORS Middleware for Laravel 5
+         * https://github.com/barryvdh/laravel-cors
+         */
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*
