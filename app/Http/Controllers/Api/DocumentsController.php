@@ -51,7 +51,7 @@ class DocumentsController extends Controller
     public function store(Request $request)
     {
         $document              = new Document();
-        $document->title       = $request->input('document');
+        $document->title       = $request->input('title');
         $document->description = $request->input('description');
         $document->content     = $request->input('content');
 
