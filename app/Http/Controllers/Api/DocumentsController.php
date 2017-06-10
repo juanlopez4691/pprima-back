@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use MongoDB\Driver\Exception\WriteException as MongoDBWriteException;
 
 class DocumentsController extends Controller
 {
@@ -55,17 +56,29 @@ class DocumentsController extends Controller
         $document->description = $request->input('description');
         $document->content     = $request->input('content');
 
-        if ($document->save()) {
+        try {
+            $document->save();
+
             return response()->json(
                 $document,
                 200
             );
-        }
+        } catch (MongoDBWriteException $e) {
+            $writeResult = $e->getWriteResult();
 
-        throw new HttpException(
-            400,
-            "Invalid data"
-        );
+            // if ($writeConcernError = $writeResult->getWriteConcernError()) {
+            //     $error = writeConcernError;
+            // }
+
+            if ($writeErrors = $writeResult->getWriteErrors()) {
+                $error = $writeErrors[0]->getMessage();
+            }
+
+            throw new HttpException(
+                404,
+                $error
+            );
+        }
     }
 
     /**
@@ -75,8 +88,10 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public
+    function show(
+        $id
+    ) {
         $document = Document::find($id);
 
         if (! $document) {
@@ -99,8 +114,10 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public
+    function edit(
+        $id
+    ) {
         //
     }
 
@@ -112,8 +129,11 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public
+    function update(
+        Request $request,
+        $id
+    ) {
         //
     }
 
@@ -124,8 +144,10 @@ class DocumentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public
+    function destroy(
+        $id
+    ) {
         $document = Document::find($id);
 
         if (! $document) {
